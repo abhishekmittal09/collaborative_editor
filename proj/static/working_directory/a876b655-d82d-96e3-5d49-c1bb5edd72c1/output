@@ -1,0 +1,1 @@
+code.c:1:10: error: #include expects "FILENAME" or <FILENAME>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<!-- saved from url=(0018)http://purecss.io/ -->
+<html lang="en" class="wf-omnespro-n2-active wf-omnespro-n3-active wf-proximanova-n1-active wf-proximanova-n4-active wf-proximanova-n7-active wf-active">
+
+<head>
+<title>CodePair</title>
+
+<link rel="stylesheet" href="./pure-min.css">
+
+<link rel="stylesheet" href="./1.7.7.css">
+
+<script async="" src="./Pure_files/analytics.js"></script>
+<script src="./Pure_files/gis6vng.js"></script>
+
+<style>
+	table{
+		width: 70%;
+		table-layout: fixed;
+	}
+
+	/*CSS for textarea*/
+
+	textarea
+	{
+		width: 200px;
+		height: 90px;
+		border-radius: 3px;
+		border: 1px solid #CCC;
+		padding: 8px;
+		font-weight: 200;
+		font-size: 15px;
+		font-family: Verdana;
+		box-shadow: 1px 1px 5px #CCC;
+	}
+	textarea:hover
+	{
+		width: 200px;
+		height: 90px;
+		border-radius: 3px;
+		border: 1px solid #aaa;
+		padding: 8px;
+		font-weight: 200;
+		font-size: 15px;
+		font-family: Verdana;
+		box-shadow: 1px 1px 5px #CCC;
+	}
+
+	.rounded-corners 
+	{
+	  -moz-border-radius: 4px; /* Firefox */
+	  -webkit-border-radius: 4px; /* Safari, Chrome */
+	  border-radius: 4px; /* universal */
+	}
+
+.wrapper {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 auto;
+  }
+
+.showhand:hover { cursor: pointer; cursor: hand; }
+
+</style>
+
+<style type="text/css">.header h1,.hero h1,.hero h2,.tk-omnes-pro{font-family:"omnes-pro",sans-serif;}</style>
+
+<link rel="stylesheet" href="d.css">
+
+<script>
+try { Typekit.load(); } catch (e) {}
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-41480445-1', 'purecss.io');
+    ga('send', 'pageview');
+</script>
+
+
+<script src="./jquery.js"></script>
+
+<!-- scripts needed establishing the connections with the webserver -->
+ <script src="bcsocket.js"></script>             <!-- add transport -->
+<script src="share.js"></script>      <!-- ShareJS -->
+<script src="textarea.js"></script>   <!-- helper to attach textarea to ShareJS server -->
+
+
+</head>
+<body>
+
+        <div class="pure-u-1" id="main" style="position:absolute;width:100%;left:0%;">
+        <div>
+            <div class="hero" id="default">
+                <div class="hero-titles">
+                    <h1>CodePair</h1>
+                </div>
+            </div>
+        </div>
+
+        <div>
+        	<div class="hero" id="default">
+        		<div class="hero-titles">
+                    <p>Hey Guys, this is a simple collaborative text editing tool using which anyone can edit the text displayed in the box below and any changes would be reflected immediately. The speed however depends on your network connection, faster the network faster the results. The tool is made using the Sharejs library of javascript and has been hosted on the Amazon EC2 server temporarily. It uses node.js for making the server that hosts this tool and Pure CSS for interface. The Operational Transformations necessary for the implementation of this tool is provided by the Sharejs library, which is an open-source project being developed by Joseph Gentle. So enjoy concurrent editing with this app.</p>
+                </div>
+            </div>
+        </div>
+        <table style="width:100%;height:300px;text-align:center">
+        <tbody>
+        <tr><td>
+        		<textarea id='sharetext' style="width:80%;max-width:80%;height:100%"></textarea>
+        	</td>
+        	<td>
+        		<textarea id='sharetextcompiler' style="width:80%;max-width:80%;height:100%" disabled>For Output</textarea>
+        	</td></tr>
+		</tbody>
+        </table>
+        <table style="width:100%;"><tbody><tr><td align="center">
+        	<br>
+        	<div class="rounded-corners wrapper showhand" style="background-color:green;height:50px;" onclick="compilecode()"><font style="color:white">&nbsp;Compile&nbsp;</font></div>
+    	</td></tr></tbody></table>
+        <div>
+        	<div class="hero" id="default">
+        		<div class="hero-titles">
+                		<p>Now you can also compile your code and view the output of compilations. The output of comilations would be shared with the other open instances of the tool as well, so that concurrently debuging is possible. Currently only one language is supported by the tool i.e., C, hopefully the tool would be made compatible with other languages soon. Stay tuned, stay hungry, stay raw.
+				</p>
+			</div>
+           	 </div>
+        </div>
+ 
+    </div>
+
+
+<!--script for connecting the html to the server for synchronization-->
+<script>
+
+	function s4() {
+		return Math.floor((1 + Math.random()) * 0x10000)
+		.toString(16)
+		.substring(1);
+	};
+
+	function guid() {
+		return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+		s4() + '-' + s4() + s4() + s4();
+	}
+
+	function checkforfile(unique_counter){
+		//alert(unique_counter);
+		var address="http://54.201.190.217/hackerrank/proj/static/working_directory/"+unique_counter+"/flagfile2.php";
+		//alert(address);
+		$.ajax({
+			url:address,
+			error: function()
+			{
+				setTimeout(function() {
+					checkforfile(unique_counter);
+				}, 1000);
+			},
+			success: function(data)
+			{
+
+				var ele=document.getElementById("sharetextcompiler");
+				ele.value="Done compiling your code.\n"+data;
+				var connectioncompiler = sharejs.open('testcomiler', 'text', function(error, doc) {
+					if (error) {
+						console.log("ERROR:", error);
+					} else {
+						doc.del(0, 1000);
+						doc.insert(0, "Done compiling your code.\n"+data);
+					}
+				});
+			}
+		});
+	}
+
+function compilecode(){
+	//alert("compiling");
+
+	var elecompiler=document.getElementById("sharetextcompiler");
+	elecompiler.value="Compiling your code.\n";
+	var connectioncompiler = sharejs.open('testcomiler', 'text', function(error, doc) {
+		if (error) {
+			console.log("ERROR:", error);
+		} else {
+			doc.del(0, 1000);
+			doc.insert(0, "Compiling your code.\n");
+		}
+	});
+
+	var ele=document.getElementById("sharetext");
+	//alert(ele.value);
+//information to be sent to the server
+
+		var unique_counter=guid();
+		var address="http://54.201.190.217/hackerrank/proj/static/compile.php?unique_counter="+unique_counter;
+		//alert(address);
+		var info = ele.value;
+		//alert(info);
+		$.ajax({
+			type: "POST",
+			url: address,
+			data: ({code: info})
+		});
+
+
+		checkforfile(unique_counter);
+}
+
+// get the textarea element 
+var elem = document.getElementById("sharetext");
+// connect to the server
+var connection = sharejs.open('test', 'text', function(error, doc) {
+		// this function is called once the connection is opened
+		if (error) {
+			console.log("ERROR:", error);
+		} else {
+		// attach the ShareJS document to the textarea
+		doc.attach_textarea(elem);
+	}
+});
+
+// connect to the server for compiler
+var elemcompiler=document.getElementById("sharetextcompiler");
+var connectioncompiler = sharejs.open('testcomiler', 'text', function(error, doc) {
+		// this function is called once the connection is opened
+		if (error) {
+			console.log("ERROR:", error);
+		} else {
+		// attach the ShareJS document to the textarea
+		doc.attach_textarea(elemcompiler);
+	}
+	//doc.insert(0, "text123");
+});
+</script>
+
+</body>
+
+</html>

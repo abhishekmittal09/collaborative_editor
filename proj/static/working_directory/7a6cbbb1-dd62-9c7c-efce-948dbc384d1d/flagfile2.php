@@ -1,0 +1,7 @@
+<?php header('Access-Control-Allow-Origin: *'); echo '
+code.c: In function ‘main’:
+code.c:3:1: error: ‘hi’ undeclared (first use in this function)
+code.c:3:1: note: each undeclared identifier is reported only once for each function it appears in
+code.c:4:1: error: ‘hi2’ undeclared (first use in this function)
+code.c:5:1: error: ‘hi3’ undeclared (first use in this function)
+';?>
