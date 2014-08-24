@@ -1,0 +1,11 @@
+Installation Instructions
+
+1. Put the contents of this folder in another folder named "hackerrank" and start a php server with apache running on the parent folder
+
+(a bit unorganized but this is how it is at the moment)
+
+Running the server
+
+In order to run the server use the command "node index.js"
+
+To run the  C server use the command "./server"
